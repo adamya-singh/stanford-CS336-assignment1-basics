@@ -1,0 +1,17 @@
+unicode1:
+    a) chr(0) returns the unicode for the null character, which is '\x00'
+    b) the string representation of chr(0) is '\x00' (it means 'a python string of length 1 containing the unicode character U+0000). the printed representation is empty since its the null character
+    c) when this character occurs in text, it appears as if nothing is there. for example:
+        >>> print("hel" + chr(0) + "lo")
+        hello
+
+unicode2:
+    a) its better to train the tokenizer on utf8 encoded bytes than on unicode characters, because instead of having a huge vocabulary of 100k+ size, we can represent everything using a vocabulary of 256 integers, and it will be less sparse. also, almost all internet text data is already in utf8 encoding
+    b) the function is incorrect because it tries to decode each individual byte into a unicode character, but some unicode characters use multiple bytes so if you try to decode a byte that is just part of a character into its own character, it will error since that single byte doesn't encode any unicode characters. for example:
+        >>> decode_utf8_bytes_to_str_wrong("™".encode("utf-8"))
+        Traceback (most recent call last):
+        File "<stdin>", line 1, in <module>
+        File "<stdin>", line 2, in decode_utf8_bytes_to_str_wrong
+        UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe2 in position 0: unexpected end of data
+        >>> 
+    c) 
